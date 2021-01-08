@@ -4,14 +4,14 @@ export default (req, res) => {
   res.statusCode = 200;
 
   if(locale === 'pt') {
-    res.json({ nome: `João` });
+    res.json({ Nome: `João` });
   };
 
   if(locale === 'es') {
-    res.json({ nombre: `Juan` });
+    res.json({ Nombre: `Juan` });
   };
 
   if(locale === 'en') {
-    res.json({ name: `John` });
+    res.json({ Name: `John` });
   };
 };

@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import useSWR from 'swr';
 import Link from 'next/link';
 import { useIntl } from 'react-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 
 const loadData = async (locale) => {
   const response = await fetch('/api/hello', {
@@ -14,13 +15,16 @@ const loadData = async (locale) => {
   return data;
 };
 
-export default function About() {
+const About = () => {
   const { locale, locales } = useRouter();
-  const { data } = useSWR([locale, 'hello'], loadData);
   const { formatMessage: format } = useIntl();
+  const data = useSWR([locale, 'hello'], loadData).data;
 
   return (
     <div>
+      <Head>
+        <title>{format({ id: 'title' })}</title>
+      </Head>
       <h1>{format({ id: 'languageInfo' })}</h1>
       <p>{format({ id: 'languageChange' })}</p>
       <nav>
@@ -28,7 +32,9 @@ export default function About() {
           {locales.map(loc => (
             <li key={loc}>
               <Link href='/' locale={loc}>
-                <a>{loc}</a>
+                <a>
+                  <p className="options">{loc}</p>
+                </a>
               </Link>
             </li>
           ))}
@@ -38,3 +44,5 @@ export default function About() {
     </div>
   );
 }
+
+export default About;
